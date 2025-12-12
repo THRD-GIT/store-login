@@ -1,0 +1,5 @@
+
+#Adding nested repos
+/node_modules
+
+.env
