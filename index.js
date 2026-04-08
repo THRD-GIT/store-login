@@ -1,7 +1,7 @@
 // Enter IST time in the following variables
 const year = 2026;
-const month = 3;
-const day = 7;
+const month = 4;
+const day = 11;
 
 const hours = 18;
 const minutes = 30;
