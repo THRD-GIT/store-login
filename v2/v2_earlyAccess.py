@@ -115,10 +115,11 @@ def main():
     while additional_phone in phone_set:
         additional_phone = generate_random_phone_number()
     
-    phone_docs.append({
+    phone_docs.insert(1, {
         "Name": "Additional User",
         "Phone": additional_phone
     })
+
 
     if not phone_docs:
         print("No phone numbers to insert")
@@ -137,7 +138,7 @@ def main():
 
         writer.writerow(["Phone Number", "Country Code"])
 
-        for row in phone_docs[1:-1]:
+        for row in phone_docs[2:]:
             phone = row.get("Phone", "")
 
             if not phone:
