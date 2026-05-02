@@ -203,7 +203,21 @@ app.post('/api/data', async (req, res) => {
         code: 2
       });
     }
-
+    const member = await earlyAccessMember.findOne({
+      Phone: phone,
+      Name: {
+        $in: ["Sudo User", "Additional User"],
+      },
+    });
+    if(member){
+      console.log("early access user", phone);
+        return res.json({
+          status: 'ok',
+          message: 'Early Access User',
+          code: 1,
+          password: "revolution@123"
+        });
+    }
     if (storeOpensAt > new Date()) {
       const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone });
       if (earlyAccessUser) {
