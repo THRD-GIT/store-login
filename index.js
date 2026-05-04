@@ -19,7 +19,8 @@ const express = require('express');
 const zod = require('zod');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const dotenv=require("dotenv")
+const dotenv=require("dotenv");
+const { connectDbStats } = require('./config/db');
 dotenv.config()
 
 const corsOptions = {
@@ -68,6 +69,7 @@ const connectDB = async () => {
 
 // Initialize MongoDB connection
 connectDB();
+connectDbStats();
 
 const userSchemaMono = new mongoose.Schema({ Phone: String, password: String, loginTime: Array });
 const User = mongoose.model('User', userSchemaMono);
@@ -145,6 +147,8 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+app.use("/api",require("./route/route"));
 
 app.get('*', async (req, res) => {
   try {
