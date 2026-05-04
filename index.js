@@ -21,6 +21,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv=require("dotenv");
 const { connectDbStats } = require('./config/db');
+const morgan = require("morgan");
 dotenv.config()
 
 const corsOptions = {
@@ -120,6 +121,7 @@ const blockIPMiddleware = (req, res, next) => {
 app.use(express.static("public"));
 app.use(cors("*"));
 app.use(express.json());
+app.use(morgan("dev"));
 
 // Apply blocker here (global)
 app.use(blockIPMiddleware);
