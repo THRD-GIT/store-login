@@ -150,7 +150,7 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-app.use("/api",require("./route/route"));
+app.use("/api1",require("./route/route"));
 
 app.get('*', async (req, res) => {
   try {
