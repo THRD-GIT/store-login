@@ -213,6 +213,7 @@ app.post('/api/data', async (req, res) => {
       Phone: phone,
        Name: { $exists: true, $ne: "" }
     });
+    console.log("member",member)
     if(member){
       console.log("early access user", phone);
         return res.json({
