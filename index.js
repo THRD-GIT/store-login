@@ -209,40 +209,74 @@ app.post('/api/data', async (req, res) => {
         code: 2
       });
     }
-    const member = await earlyAccessMember.findOne({
-      Phone: phone,
-       Name: { $exists: true, $ne: "" }
-    });
-    console.log("member",member)
-    if(member){
-      console.log("early access user", phone);
-        return res.json({
-          status: 'ok',
-          message: 'Early Access User',
-          code: 1,
-          password: "revolution@123"
-        });
+    // const member = await earlyAccessMember.findOne({
+    //   Phone: phone,
+    //    Name: { $exists: true, $ne: "" }
+    // });
+    // console.log("member",member)
+    // if(member){
+    //   console.log("early access user", phone);
+    //     return res.json({
+    //       status: 'ok',
+    //       message: 'Early Access User',
+    //       code: 1,
+    //       password: "revolution@123"
+    //     });
+    // }
+    // if (storeOpensAt > new Date()) {
+    //   const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone });
+    //   if (earlyAccessUser) {
+    //     console.log("early access user", phone);
+    //     return res.json({
+    //       status: 'ok',
+    //       message: 'Early Access User',
+    //       code: 1,
+    //       password: "revolution@123"
+    //     });
+    //   } else {
+    //     console.log("not early access user", phone);
+    //     return res.json({
+    //       status: 'error',
+    //       message: 'Not Early Access User',
+    //       code: 5
+    //     });
+    //   }
+    // }
+
+
+    let member;
+
+    if (new Date() >= storeOpensAt) {
+      // After store opening date/time: only Phone check
+      member = await earlyAccessMember.findOne({
+        Phone: phone
+      });
+    } else {
+      // Before store opening date/time: Phone + Name must exist
+      member = await earlyAccessMember.findOne({
+        Phone: phone,
+        Name: { $exists: true, $ne: "" }
+      });
     }
-    if (storeOpensAt > new Date()) {
-      const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone });
-      if (earlyAccessUser) {
-        console.log("early access user", phone);
-        return res.json({
-          status: 'ok',
-          message: 'Early Access User',
-          code: 1,
-          password: "revolution@123"
-        });
-      } else {
-        console.log("not early access user", phone);
-        return res.json({
+
+    console.log("member", member);
+
+    if (member) {
+      console.log("early access user", phone);
+
+      return res.json({
+        status: 'ok',
+        message: 'Early Access User',
+        code: 1,
+        password: "revolution@123"
+      });
+    }else{
+      return res.json({
           status: 'error',
           message: 'Not Early Access User',
           code: 5
         });
-      }
     }
-
     const blacklistedUser = await BlacklistedMember.findOne({ Phone: phone });
     
     if (blacklistedUser) {
