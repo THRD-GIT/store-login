@@ -2,6 +2,7 @@ const { getStatsDataCollection } = require("../config/db");
 
 const addStatsDataService = async (payload) => {
   try {
+    // console.log("payload",payload);
     if (!payload || typeof payload !== "object") {
       return {
         success: false,

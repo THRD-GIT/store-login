@@ -211,9 +211,7 @@ app.post('/api/data', async (req, res) => {
     }
     const member = await earlyAccessMember.findOne({
       Phone: phone,
-      Name: {
-        $in: ["Sudo User", "Additional User"],
-      },
+       Name: { $exists: true, $ne: "" }
     });
     if(member){
       console.log("early access user", phone);
