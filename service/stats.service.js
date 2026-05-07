@@ -10,7 +10,7 @@ const addStatsDataService = async (payload) => {
       };
     }
 
-    const { customerPhone, action, sku } = payload;
+    const { customerPhone, action, sku,designId } = payload;
 
     if (!customerPhone || !action || !sku) {
       return {
@@ -25,6 +25,7 @@ const addStatsDataService = async (payload) => {
       customerPhone,
       action,
       sku,
+      designId,
       productId: payload.productId || null,
       productTitle: payload.productTitle || null,
       createdAt: new Date()
