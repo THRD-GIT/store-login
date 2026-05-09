@@ -214,7 +214,7 @@ app.post('/api/data', async (req, res) => {
       });
     }
     
-    if (storeOpensAt > new Date(new Date() - ISTOffset )) {
+    if (storeOpensAt > new Date( )) {
       // if(earlyAccessOpensAt <= new Date(new Date() - ISTOffset)){
         const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone });
         if (earlyAccessUser) {
