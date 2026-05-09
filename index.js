@@ -215,7 +215,7 @@ app.post('/api/data', async (req, res) => {
     }
     
     if (storeOpensAt > new Date(new Date() - ISTOffset )) {
-      if(earlyAccessOpensAt <= new Date(new Date() - ISTOffset)){
+      // if(earlyAccessOpensAt <= new Date(new Date() - ISTOffset)){
         const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone });
         if (earlyAccessUser) {
           console.log("early access user", phone);
@@ -234,25 +234,25 @@ app.post('/api/data', async (req, res) => {
           });
         }
 
-      }else{
-        const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone,Name: { $exists: true, $ne: "" } });
-        if (earlyAccessUser) {
-          console.log("early access user after", phone);
-          return res.json({
-            status: 'ok',
-            message: 'Early Access User',
-            code: 1,
-            password: "revolution@123"
-          });
-        } else {
-          console.log("not early access user", phone);
-          return res.json({
-            status: 'error',
-            message: 'Not Early Access User',
-            code: 5
-          });
-        }
-      }
+      // }else{
+      //   const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone,Name: { $exists: true, $ne: "" } });
+      //   if (earlyAccessUser) {
+      //     console.log("early access user after", phone);
+      //     return res.json({
+      //       status: 'ok',
+      //       message: 'Early Access User',
+      //       code: 1,
+      //       password: "revolution@123"
+      //     });
+      //   } else {
+      //     console.log("not early access user", phone);
+      //     return res.json({
+      //       status: 'error',
+      //       message: 'Not Early Access User',
+      //       code: 5
+      //     });
+      //   }
+      // }
     }
 
 
