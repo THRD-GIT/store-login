@@ -203,7 +203,7 @@ app.post('/api/data', async (req, res) => {
       });
     } 
 
-    const phone = BigInt(req.body.phone);
+    const phone = String(req.body.phone);
 
     const removedusers = await removedMember.findOne({ phone: phone });
     if (removedusers) {
@@ -214,8 +214,8 @@ app.post('/api/data', async (req, res) => {
       });
     }
     
-    if (storeOpensAt > new Date()) {
-      if(earlyAccessOpensAt <= new Date()){
+    if (storeOpensAt > new Date(new Date() - ISTOffset )) {
+      if(earlyAccessOpensAt <= new Date(new Date() - ISTOffset)){
         const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone });
         if (earlyAccessUser) {
           console.log("early access user", phone);
