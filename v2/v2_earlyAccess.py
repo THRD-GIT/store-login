@@ -60,6 +60,8 @@ def get_last_drop_date():
 def main():
     last_drop_date = get_last_drop_date()
 
+    print(f"Last drop date: {last_drop_date}")
+
     if last_drop_date is None:
         print("No valid last drop date found")
         return set()
@@ -69,8 +71,14 @@ def main():
     header = data[0]
 
     date_formats = [
+        "%m/%d/%Y, %I:%M:%S",     # 10/6/2025, 1:13:24
+        "%m/%d/%Y %I:%M:%S",
         "%m/%d/%Y, %I:%M:%S %p",  # 10/6/2025, 1:13:24 PM
+        "%m/%d/%Y %I:%M:%S %p",
         "%d/%m/%Y, %H:%M:%S",     # 07/10/2025, 18:16:25
+        "%d/%m/%Y %H:%M:%S", 
+        "%d/%m/%Y, %H:%M:%S %p",  # 07/10/2025, 18:16:25 PM
+        "%d/%m/%Y %H:%M:%S %p",
     ]
 
     phone_docs = [{"Name": "Sudo User", "Phone":"5555599999"}]
@@ -103,6 +111,7 @@ def main():
                 continue
 
         if ordered_date is None:
+            print(f"  Date format not matched: {ordered_date_str}")
             continue
 
         if ordered_date >= last_drop_date and resolution in EARLY_ACCESS_TYPE and phone_number not in phone_set:
@@ -122,15 +131,15 @@ def main():
 
 
     if not phone_docs:
-        print("No phone numbers to insert")
+        print("   No phone numbers to insert")
         CLIENT.close()
         return
     
     COLLECTION.delete_many({})
-    print("Old early access members deleted")
+    print("\nOld early access members deleted")
     
     result = COLLECTION.insert_many(phone_docs)
-    print(f"Inserted {len(result.inserted_ids)} phone numbers")
+    print(f"\nInserted {len(result.inserted_ids)} phone numbers")
     CLIENT.close()
 
     with open("early_access.csv", "w", newline="") as f:
@@ -146,11 +155,11 @@ def main():
 
             writer.writerow([phone, "91"])
 
-    print("early_access.csv created")
+    print("\nearly_access.csv created")
 
     return phone_docs
 
 
 if __name__ == "__main__":
     phone_docs = main()
-    print(phone_docs)
+    print(f"\nEarly Access to {len(phone_docs)} phone numbers")
