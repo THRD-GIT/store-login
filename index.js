@@ -4,7 +4,7 @@ const month = 6;
 const day = 6;
 
 const hours = 18;
-const minutes = 30;
+const minutes = 10;
 
 // Calculate the UTC time by subtracting 5 hours and 30 minutes from IST
 const ISTOffset = 5.5 * 60 * 60 * 1000; // 5.5 hours in milliseconds
@@ -214,8 +214,8 @@ app.post('/api/data', async (req, res) => {
       });
     }
     
-    if (storeOpensAt > new Date( )) {
-      // if(earlyAccessOpensAt <= new Date(new Date() - ISTOffset)){
+    if (storeOpensAt > new Date( new Date() - ISTOffset )) {
+      if(earlyAccessOpensAt <= new Date( new Date() - ISTOffset)){
         const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone });
         if (earlyAccessUser) {
           console.log("early access user", phone);
@@ -234,25 +234,25 @@ app.post('/api/data', async (req, res) => {
           });
         }
 
-      // }else{
-      //   const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone,Name: { $exists: true, $ne: "" } });
-      //   if (earlyAccessUser) {
-      //     console.log("early access user after", phone);
-      //     return res.json({
-      //       status: 'ok',
-      //       message: 'Early Access User',
-      //       code: 1,
-      //       password: "revolution@123"
-      //     });
-      //   } else {
-      //     console.log("not early access user", phone);
-      //     return res.json({
-      //       status: 'error',
-      //       message: 'Not Early Access User',
-      //       code: 5
-      //     });
-      //   }
-      // }
+      }else{
+        const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone,Name: { $exists: true, $ne: "" } });
+        if (earlyAccessUser) {
+          console.log("early access user after", phone);
+          return res.json({
+            status: 'ok',
+            message: 'Early Access User',
+            code: 1,
+            password: "revolution@123"
+          });
+        } else {
+          console.log("not early access user", phone);
+          return res.json({
+            status: 'error',
+            message: 'Not Early Access User',
+            code: 5
+          });
+        }
+      }
     }
 
 
