@@ -6,19 +6,25 @@ const day = 6;
 const hours = 18;
 const minutes = 30;
 
+
 // Calculate the UTC time by subtracting 5 hours and 30 minutes from IST
-const ISTOffset = 5.5 * 60 * 60 * 1000; // 5.5 hours in milliseconds
 
-// Create a Date object with IST time
-const storeOpensAtIST = new Date(year, month - 1, day, hours, minutes);
 
-// Convert IST to UTC by subtracting the IST offset
-const storeOpensAt = new Date(storeOpensAtIST.getTime() - ISTOffset);
+// IST is UTC + 5 hours 30 minutes
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
 
-const earlyAccessOpensAtIST = new Date(year, month - 1, day, hours-1, minutes);
+// Store opens at 6:30 PM IST
+const storeOpensAt = new Date(
+  Date.UTC(year, month - 1, day, hours, minutes) - IST_OFFSET_MS
+);
 
-const earlyAccessOpensAt =  new Date(earlyAccessOpensAtIST.getTime() - ISTOffset);
+// Early access opens 1 hour before store opening, i.e. 5:30 PM IST
+const earlyAccessOpensAt = new Date(
+  Date.UTC(year, month - 1, day, hours - 1, minutes) - IST_OFFSET_MS
+);
 
+console.log("Store opens at UTC:", storeOpensAt.toISOString());
+console.log("Early access opens at UTC:", earlyAccessOpensAt.toISOString());
 const express = require('express');
 const zod = require('zod');
 const mongoose = require('mongoose');
@@ -214,8 +220,8 @@ app.post('/api/data', async (req, res) => {
       });
     }
     
-    if (storeOpensAt > new Date( new Date() - ISTOffset )) {
-      if(earlyAccessOpensAt <= new Date( new Date() - ISTOffset)){
+    if (storeOpensAt > new Date()) {
+      if(earlyAccessOpensAt <= new Date()){
         const earlyAccessUser = await earlyAccessMember.findOne({ Phone: phone });
         if (earlyAccessUser) {
           console.log("early access user", phone);
