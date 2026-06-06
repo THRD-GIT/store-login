@@ -4,7 +4,7 @@ const month = 6;
 const day = 6;
 
 const hours = 18;
-const minutes = 10;
+const minutes = 30;
 
 // Calculate the UTC time by subtracting 5 hours and 30 minutes from IST
 const ISTOffset = 5.5 * 60 * 60 * 1000; // 5.5 hours in milliseconds
